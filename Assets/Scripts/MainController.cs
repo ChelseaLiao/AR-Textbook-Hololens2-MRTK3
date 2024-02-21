@@ -36,17 +36,20 @@ public class MainController : MonoBehaviour
     }
     public void nextArticle()
     {
-        ParagraphsReader.articleIndex += 1;
-        if(ParagraphsReader.readJSon() != null)
-        {
-            foreach(var o in GameObject.FindGameObjectsWithTag("imageWindow"))
-                Destroy(o);
-            mediaController.imageObject.Clear();
-            Debug.Log("image clear");
-            MediaController.contentChanged = true;
-        }
-        else
-            ParagraphsReader.articleIndex -= 1;
+            ParagraphsReader.articleIndex += 1;
+            if(ParagraphsReader.readJSon() != null)
+            {
+                foreach(var o in GameObject.FindGameObjectsWithTag("imageWindow"))
+                    Destroy(o);
+                mediaController.imageObject.Clear();
+                Debug.Log("image clear");
+                foreach(var o in GameObject.FindGameObjectsWithTag("videoWindow"))
+                    Destroy(o);
+                mediaController.videoObject.Clear();
+                MediaController.contentChanged = true;
+            }
+            else
+                ParagraphsReader.articleIndex -= 1;
         
 
     }

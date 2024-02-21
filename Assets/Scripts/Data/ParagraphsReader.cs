@@ -12,15 +12,21 @@ public class ArticleData
     public string author = "null";
     public List<string> paragraphsTitle;
     public List<string> content;
-    public List<string> videoPath;
-    public List<string> videoName;
+    public List<VideoDetail> video;
     public List<ImageDetail> image;
     
+}
+[System.Serializable]
+public class VideoDetail
+{
+    public List<string> videoPath;
+    public List<string> videoName;
 }
 [System.Serializable]
 public class ImageDetail
 {
     public List<string> imageName;
+    public List<string> imagePath;
     public List<int> imageWidth;
     public List<int> imageHeight;
 }
@@ -35,17 +41,19 @@ public class ParagraphsReader : MonoBehaviour
     public static bool pageLoad = false;
     public static int articleIndex = 0;
     public static string articleIndexString;
-    public static List<string> _videoPath;
+    public static List<VideoDetail> _video;
     public static List<string> _videoName;
+    public static List<string> _videoPath;
     public static List<ImageDetail> _image;
     public static List<string> _imageName;
     public static List<int> _imageWidth;
     public static List<int> _imageHeight;
     public static ArticleData articleDataTemp;
+    public static string rootPath = "https://github.com/ChelseaLiao/AR-Textbook-Hololens2-MRTK3/releases/download/Materials";
     // Start is called before the first frame update
     void Start()
     {
-       LoadPage();
+       //LoadPage();
         
     }
 
@@ -63,8 +71,7 @@ public class ParagraphsReader : MonoBehaviour
         _author = _info.author;
         _paragraphsTitle = _info.paragraphsTitle;
         _content = _info.content;
-        _videoPath = _info.videoPath;
-        _videoName = _info.videoName;
+        _video = _info.video;
         _image = _info.image;
     }
     public static ArticleData readJSon()
@@ -72,14 +79,13 @@ public class ParagraphsReader : MonoBehaviour
         try
         {
             articleIndexString = articleIndex.ToString();
-            JsonPath = "https://github.com/ChelseaLiao/Doc/releases/download/json/data_"+articleIndexString+".json";
-            //JsonPath = "http://192.168.3.65:8080/data_"+articleIndexString+".json";
-            //Debug.Log(JsonPath);
+            JsonPath = rootPath + "/article_"+articleIndexString+".json";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(JsonPath);
             WebResponse response = request.GetResponse();
             Stream resStream = response.GetResponseStream();
             StreamReader sr = new StreamReader(resStream);
             string json = sr.ReadToEnd();
+            Debug.Log(json);
             articleDataTemp = JsonUtility.FromJson<ArticleData>(json);
             return articleDataTemp;
         }

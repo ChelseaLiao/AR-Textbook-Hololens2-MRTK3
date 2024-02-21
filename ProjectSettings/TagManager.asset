@@ -10,6 +10,7 @@ TagManager:
   - ArticleTitle
   - VideoTitle
   - ImageTitle
+  - videoWindow
   layers:
   - Default
   - TransparentFX
